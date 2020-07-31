@@ -14,8 +14,8 @@ let dirClientName = "client";
 let dirServerName = "server";
 
 Editor.Panel.extend({
-    style: fs.readFileSync(Editor.url('packages://' + packageName + '/panel/index.css', 'utf8')) + "",
-    template: fs.readFileSync(Editor.url('packages://' + packageName + '/panel/index.html', 'utf8')) + "",
+    style: fs.readFileSync(Editor.url('packages://' + packageName + '/panel/excel.css', 'utf8')) + "",
+    template: fs.readFileSync(Editor.url('packages://' + packageName + '/panel/excel.html', 'utf8')) + "",
 
 
     $: {
@@ -37,25 +37,24 @@ Editor.Panel.extend({
             created() {
                 this._initPluginCfg();
             },
-            init() {
-            },
+            init() {},
             data: {
                 logView: "",
                 excelRootPath: null,
 
                 isMergeJson: false,
                 isMergeJavaScript: false,
-                isExportJson: false,// 是否导出Json
-                isExportJs: false,// 是否导出Js
-                isFormatJson: false,// 是否格式化Json
-                isExportClient: false,// 是否导出客户端
-                isExportServer: false,// 是否导出服务端
-                isJsonAllCfgFileExist: false,// 是否单一配置文件存在
-                jsonSavePath: null,// json保存文件夹路径
-                jsonAllCfgFileName: null,// json配置文件名
+                isExportJson: false, // 是否导出Json
+                isExportJs: false, // 是否导出Js
+                isFormatJson: false, // 是否格式化Json
+                isExportClient: false, // 是否导出客户端
+                isExportServer: false, // 是否导出服务端
+                isJsonAllCfgFileExist: false, // 是否单一配置文件存在
+                jsonSavePath: null, // json保存文件夹路径
+                jsonAllCfgFileName: null, // json配置文件名
 
-                jsSavePath: null,// 插件资源目录
-                jsFileName: null,//js配置合并为一个文件的文件名
+                jsSavePath: null, // 插件资源目录
+                jsFileName: null, //js配置合并为一个文件的文件名
                 isJsFileExist: false,
                 isFormatJsCode: false,
                 excelArray: [],
@@ -208,7 +207,7 @@ Editor.Panel.extend({
                             this.jsonAllCfgFileName = "GameJsonCfg";
                         }
                     }.bind(this));
-                    this._initCfgSavePath();// 默认json路径
+                    this._initCfgSavePath(); // 默认json路径
                 },
                 _initCfgSavePath() {
                     let projectPath = Editor.projectInfo.path;
@@ -358,7 +357,7 @@ Editor.Panel.extend({
                         this.excelFileArr = excelFileArr;
                         // 组装显示的数据
                         let excelSheetArray = [];
-                        let sheetDuplicationChecker = {};//表单重名检测
+                        let sheetDuplicationChecker = {}; //表单重名检测
                         for (let k in excelFileArr) {
                             let itemFullPath = excelFileArr[k];
                             // this._addLog("excel : " + itemFullPath);
@@ -492,12 +491,9 @@ Editor.Panel.extend({
                                 let key = title[j];
                                 let rule = '';
 
-                                if (typeof ruleText[j] === 'string')
-                                {
+                                if (typeof ruleText[j] === 'string') {
                                     rule = ruleText[j].trim();
-                                }
-                                else
-                                {
+                                } else {
                                     this._addLog(`[exception] ${j + 1}列规则文本异常，请检查`);
                                     continue;
                                 }
@@ -542,7 +538,7 @@ Editor.Panel.extend({
 
                     let useFormat1 = false;
                     if (useFormat1) {
-                        let saveData1 = [];// 格式1:对应的为数组
+                        let saveData1 = []; // 格式1:对应的为数组
                         for (let i = 4; i < excelData.length; i++) {
                             let lineData = excelData[i];
                             if (lineData.length < title.length) {
@@ -595,7 +591,7 @@ Editor.Panel.extend({
                         }
                         ret = saveData1;
                     } else {
-                        let saveData2 = {};// 格式2:id作为索引
+                        let saveData2 = {}; // 格式2:id作为索引
                         for (let i = 4; i < excelData.length; i++) {
                             let lineData = excelData[i];
                             if (lineData.length !== title.length) {
@@ -667,8 +663,7 @@ Editor.Panel.extend({
 
                         if (text[text.length - 1].search(/;|,/) != -1) {
                             text = text.slice(0, text.length - 1);
-                        }
-                        else if (text[0].search(/;|,/) != -1) {
+                        } else if (text[0].search(/;|,/) != -1) {
                             text = text.slice(1, text.length);
                         }
                     }
@@ -712,8 +707,7 @@ Editor.Panel.extend({
                             for (let item of textArray) {
                                 array.push(`{${item}}`);
                             }
-                        }
-                        else {
+                        } else {
                             array = text.match(/{[^({|})]*}/g);
                         }
 
@@ -784,8 +778,7 @@ Editor.Panel.extend({
 
                         try {
                             result = JSON.parse(newText);
-                        }
-                        catch (exception) {
+                        } catch (exception) {
                             debugger;
                         }
                     }
@@ -817,8 +810,7 @@ Editor.Panel.extend({
                             result.push(json);
                         }
 
-                    }
-                    else if (rule.search(/Object\{[a-zA-Z0-9\[\]:,"]*\}/) === 0) {
+                    } else if (rule.search(/Object\{[a-zA-Z0-9\[\]:,"]*\}/) === 0) {
                         result = {};
 
                         if (rule.search(/String/) != -1) {
@@ -861,8 +853,7 @@ Editor.Panel.extend({
                         let json = null
                         try {
                             json = JSON.parse(str);
-                        }
-                        catch (e) {
+                        } catch (e) {
                             debugger;
                         }
 
@@ -955,11 +946,11 @@ Editor.Panel.extend({
                     fsExtra.emptyDirSync(jsSavePath1);
                     fsExtra.emptyDirSync(jsSavePath2);
 
-                    let jsonAllSaveDataClient = {};// 保存客户端的json数据
-                    let jsonAllSaveDataServer = {};// 保存服务端的json数据
+                    let jsonAllSaveDataClient = {}; // 保存客户端的json数据
+                    let jsonAllSaveDataServer = {}; // 保存服务端的json数据
 
-                    let jsAllSaveDataClient = {};// 保存客户端的js数据
-                    let jsAllSaveDataServer = {};// 保存服务端的js数据
+                    let jsAllSaveDataClient = {}; // 保存客户端的js数据
+                    let jsAllSaveDataServer = {}; // 保存服务端的js数据
 
                     for (let k in this.excelArray) {
                         let itemSheet = this.excelArray[k];
@@ -1035,7 +1026,7 @@ Editor.Panel.extend({
                                         if (this.isExportServer) writeFileJs(jsSavePath2, false);
                                     }
                                 } else {
-                                    this._addLog("行数低于3行,无效sheet:" + itemSheet.sheet);
+                                    this._addLog("不符合标准的sheet:" + itemSheet.sheet);
                                 }
                             } else {
                                 this._addLog("未发现数据");
@@ -1076,9 +1067,7 @@ Editor.Panel.extend({
                     let str = ''
                     if (this.isFormatJson) {
                         str = JSON.stringify(data, null, '\t');
-                    }
-                    else
-                    {
+                    } else {
                         str = JSON.stringify(data);
                     }
                     fs.writeFileSync(saveFileFullPath, str);
@@ -1088,9 +1077,9 @@ Editor.Panel.extend({
                 _onSaveJavaScriptCfgFile(saveFileFullPath, jsSaveData) {
                     // TODO 保证key的顺序一致性
                     let saveStr = "module.exports = ";
-                    if (this.isFormatJsCode) {// 保存为格式化代码
+                    if (this.isFormatJsCode) { // 保存为格式化代码
                         saveStr = saveStr + JSON.stringify(jsSaveData, null, '\t') + ";";
-                    } else {// 保存为单行代码
+                    } else { // 保存为单行代码
                         saveStr = saveStr + JSON.stringify(jsSaveData) + ";";
                     }
 
@@ -1103,7 +1092,6 @@ Editor.Panel.extend({
     },
 
     messages: {
-        'excel-killer:hello'(event) {
-        }
+        'excel-killer:hello'(event) {}
     }
 });
